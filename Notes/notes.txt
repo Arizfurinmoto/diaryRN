@@ -1,0 +1,8 @@
+-> diary entries -> adding pages
+-> edit diary entries (text, adding/deleting images)
+-> deleting diary entries (pages)
+-> adding images
+-> deleting images
+-> date of diary entry and date of entry edition
+
+Photo by Marjan Blan on Unsplash (paper background)  
