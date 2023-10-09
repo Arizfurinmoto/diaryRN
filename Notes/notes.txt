@@ -3,6 +3,6 @@
 -> deleting diary entries (pages)
 -> adding images
 -> deleting images
--> date of diary entry and date of entry edition
+-> date of a diary entry and date of an entry edition
 
 Photo by Marjan Blan on Unsplash (paper background)  

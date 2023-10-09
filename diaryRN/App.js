@@ -10,20 +10,23 @@ import { useState } from "react";
 import paper from "./assets/paper.jpg";
 import AddEntryButton from "./components/AddEntryButton";
 import DiaryEntry from "./components/DiaryEntry.js";
+import EntryItem from "./components/EntryItem";
 
 export default function App() {
     const [modalVisible, setModalVisible] = useState(false);
     const [entriesList, setEntriesList] = useState([]);
+    const [counterID, setCounterID] = useState(0);
 
     const handleModal = () => {
-        console.log("Modal state changed to " + modalVisible);
+        console.log("Modal state changed to " + !modalVisible);
         setModalVisible(!modalVisible);
     };
 
     const updateEntriesList = (desc, curDate) => {
+        setCounterID(counterID + 1);
         setEntriesList((currentEntry) => [
             ...currentEntry,
-            { text: desc, date: curDate, id: Math.random().toString() },
+            { text: desc, date: curDate, id: counterID.toString() },
         ]);
     };
 
@@ -41,24 +44,29 @@ export default function App() {
                 style={styles.backgroundImage}
             >
                 <AddEntryButton handleModal={handleModal} />
+
                 <View style={styles.entriesContainer}>
-                    <Text>Let's make this diary!</Text>
+                    <Text>
+                        {counterID == 0
+                            ? "There's nothing to display. Add new entry!"
+                            : ""}
+                    </Text>
                     <FlatList
                         data={entriesList}
                         renderItem={(itemData) => {
                             itemData.index;
                             return (
-                                <View
-                                    style={{ flexDirection: "row", padding: 5 }}
-                                >
-                                    <Text>{itemData.item.text}</Text>
-                                    <Text>{itemData.item.date}</Text>
-                                </View>
+                                <EntryItem
+                                    id={itemData.item.id}
+                                    date={itemData.item.date}
+                                />
                             );
                         }}
                         keyExtractor={(item, index) => {
                             return item.id;
                         }}
+                        style={{ width: "100%" }}
+                        contentContainerStyle={{ alignItems: "center" }}
                     />
                 </View>
             </ImageBackground>
@@ -80,5 +88,9 @@ const styles = StyleSheet.create({
     },
     entriesContainer: {
         padding: 15,
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+        height: "90%",
     },
 });
