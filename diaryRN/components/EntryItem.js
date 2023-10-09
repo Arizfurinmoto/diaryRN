@@ -1,17 +1,29 @@
 import { View } from "react-native";
 import { Pressable, StyleSheet, Text } from "react-native";
+import EntryDisplay from "./EntryDisplay";
 
 
 const EntryItem = (props) => {
     return (
-        <Pressable style={styles.entryContainer}>
-            <View style={styles.textContainer}>
-                <Text style={styles.idContainer}>{props.id}</Text>
-            </View>
-            <View style={styles.textContainer}>
-                <Text style={styles.dateContainer}>{props.date}</Text>
-            </View>
-        </Pressable>
+        <>
+            <EntryDisplay
+                visible={props.visible}
+                date={props.date}
+                desc={props.text}
+                handleModal={props.handleModal}
+            />
+            <Pressable
+                style={styles.entryContainer}
+                onPress={props.handleModal}
+            >
+                <View style={styles.textContainer}>
+                    <Text style={styles.idContainer}>{props.id}</Text>
+                </View>
+                <View style={styles.textContainer}>
+                    <Text style={styles.dateContainer}>{props.date}</Text>
+                </View>
+            </Pressable>
+        </>
     );
 }
 

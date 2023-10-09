@@ -11,31 +11,38 @@ import paper from "./assets/paper.jpg";
 import AddEntryButton from "./components/AddEntryButton";
 import DiaryEntry from "./components/DiaryEntry.js";
 import EntryItem from "./components/EntryItem";
+import EntryDisplay from "./components/EntryDisplay";
 
 export default function App() {
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modalNewEntryVisible, setModalNewEntryVisible] = useState(false);
+    const [modalInfoVisible, setModalInfoVisible] = useState(false);
     const [entriesList, setEntriesList] = useState([]);
-    const [counterID, setCounterID] = useState(0);
+    const [counterID, setCounterID] = useState(1);
 
-    const handleModal = () => {
-        console.log("Modal state changed to " + !modalVisible);
-        setModalVisible(!modalVisible);
+    const handleNewEntryModal = () => {
+        console.log("Modal state changed to " + !modalNewEntryVisible);
+        setModalNewEntryVisible(!modalNewEntryVisible);
+    };
+
+    const handleInfoModal = () => {
+        console.log("Modal Info state changed to " + !modalInfoVisible);
+        setModalInfoVisible(!modalInfoVisible);
     };
 
     const updateEntriesList = (desc, curDate) => {
-        setCounterID(counterID + 1);
         setEntriesList((currentEntry) => [
             ...currentEntry,
             { text: desc, date: curDate, id: counterID.toString() },
         ]);
+        setCounterID(counterID + 1);
     };
 
     return (
         <View style={styles.container}>
             <StatusBar />
             <DiaryEntry
-                visible={modalVisible}
-                handleModal={handleModal}
+                visible={modalNewEntryVisible}
+                handleModal={handleNewEntryModal}
                 updateEntriesList={updateEntriesList}
             />
             <ImageBackground
@@ -43,12 +50,12 @@ export default function App() {
                 resizeMode='cover'
                 style={styles.backgroundImage}
             >
-                <AddEntryButton handleModal={handleModal} />
+                <AddEntryButton handleModal={handleNewEntryModal} />
 
                 <View style={styles.entriesContainer}>
-                    <Text>
-                        {counterID == 0
-                            ? "There's nothing to display. Add new entry!"
+                    <Text style={{ textAlign: "center" }}>
+                        {counterID == 1
+                            ? "There's nothing to display.\n Add new entry!"
                             : ""}
                     </Text>
                     <FlatList
@@ -57,8 +64,11 @@ export default function App() {
                             itemData.index;
                             return (
                                 <EntryItem
+                                    visible={modalInfoVisible}
                                     id={itemData.item.id}
                                     date={itemData.item.date}
+                                    text={itemData.item.text}
+                                    handleModal={handleInfoModal}
                                 />
                             );
                         }}
