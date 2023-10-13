@@ -45,12 +45,26 @@ const DiaryEntry = (props) => {
     };
 
     const getCurrentTime = () => {
+        let hour;
+        let minutes;
         const time = new Date();
 
-        const hours = time.getHours();
-        const minutes = time.getMinutes();
+        const h = time.getHours();
+        const m = time.getMinutes();
 
-        return hours.toString() + ":" + minutes.toString();
+        if (m.toString().length < 2){
+            minutes = "0" + m.toString();
+        } else{
+            minutes = m.toString();
+        }
+
+        if (h.toString().length < 2) {
+            hour = "0" + h.toString();
+        } else {
+            hour = h.toString();
+        }
+
+        return hour + ":" + minutes;
     };
 
     const currentDate = getCurrentDate();

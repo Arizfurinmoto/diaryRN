@@ -21,7 +21,7 @@ const EntryDisplay = (props) => {
                 resizeMode='cover'
                 style={styles.descContainer}
             >
-                <Text style={styles.textDate}>{props.date}</Text>
+                <Text style={styles.textDate}>{props.date + "\n" + props.time}</Text>
                 <Text style={styles.textContainer}>{props.desc}</Text>
                 <View style={styles.buttonContainer}>
                     <View style={styles.button}>

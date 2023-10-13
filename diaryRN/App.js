@@ -30,6 +30,13 @@ export default function App() {
         setModalInfoVisible(!modalInfoVisible);
     };
 
+    function deleteEntryHandler(id) {
+        setEntriesList((currentEntries) => {
+            return currentEntries.filter((entry) => entry.id !== id);
+        });
+        console.log("Delete");
+    }
+
     const updateEntriesList = (desc, curDate, curTime) => {
         setEntriesList((currentEntry) => [
             ...currentEntry,
@@ -73,6 +80,7 @@ export default function App() {
                                     date={item.date}
                                     time={item.time}
                                     handleModal={() => setSelectedEntry(item)}
+                                    onDeleteItem={deleteEntryHandler}
                                 />
                                 <EntryDisplay
                                     visible={
@@ -81,6 +89,7 @@ export default function App() {
                                     }
                                     date={item.date}
                                     desc={item.text}
+                                    time={item.time}
                                     handleModal={() => setSelectedEntry(null)}
                                 />
                             </>

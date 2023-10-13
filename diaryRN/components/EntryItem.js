@@ -1,16 +1,23 @@
 import { View } from "react-native";
 import { Pressable, StyleSheet, Text } from "react-native";
+import  Icon  from "@expo/vector-icons/MaterialCommunityIcons";
 
 const EntryItem = (props) => {
     return (
         <Pressable style={styles.entryContainer} onPress={props.handleModal}>
-            <View style={styles.textContainer}>
-                <Text style={styles.idContainer}>{props.id}</Text>
+            <View style={styles.idContainer}>
+                <Text style={styles.id}>{props.id}</Text>
             </View>
             <View style={styles.dateContainer}>
                 <Text style={styles.dateTextContainer}>{props.date}</Text>
                 <Text style={styles.dateTextContainer}>{props.time}</Text>
             </View>
+            <Icon
+                name='delete-circle'
+                size={30}
+                color={"#000"}
+                onPress={props.onDeleteItem.bind(this, props.id)}
+            />
         </Pressable>
     );
 };
@@ -28,7 +35,7 @@ const styles = StyleSheet.create({
         elevation: 5,
         marginVertical: 4,
     },
-    idContainer: {
+    id: {
         backgroundColor: "black",
         borderRadius: 30,
         width: 20,
@@ -41,13 +48,15 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontWeight: "bold",
     },
-    textContainer: {
-        width: "50%",
+    idContainer: {
+        // width: "20%",
         justifyContent: "center",
+        // backgroundColor: "red",
     },
     dateContainer: {
-        width: "50%",
+        width: "90%",
         justifyContent: "space-around",
         flexDirection: "row",
+        // backgroundColor: "blue",
     },
 });
