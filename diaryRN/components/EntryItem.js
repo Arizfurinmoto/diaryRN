@@ -38,10 +38,11 @@ const styles = StyleSheet.create({
     id: {
         backgroundColor: "black",
         borderRadius: 30,
-        width: 20,
-        height: 20,
+        width: 25,
+        height: 25,
         color: "white",
         textAlign: "center",
+        textAlignVertical:"center",
         fontWeight: "bold",
     },
     dateTextContainer: {
@@ -49,7 +50,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     idContainer: {
-        // width: "20%",
+        width: 30,
+        height: 30,
         justifyContent: "center",
         // backgroundColor: "red",
     },

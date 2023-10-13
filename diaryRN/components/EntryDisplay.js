@@ -11,9 +11,22 @@ import {
 import paper from "../assets/paper.jpg";
 
 const EntryDisplay = (props) => {
+    const [enteredText, setEnteredText] = useState(props.desc);
+    const [editModeON, setEditModeON] = useState(false);
+
+    const textInputHandler = (enteredText) => {
+        setEnteredText(enteredText);
+    };
+
     const cancelHandler = () => {
+        setEditModeON(false);
         props.handleModal();
     };
+
+    const handleEditMode = () => {
+        setEditModeON(!editModeON);
+    }
+    
     return (
         <Modal visible={props.visible} animationType='slide'>
             <ImageBackground
@@ -21,13 +34,35 @@ const EntryDisplay = (props) => {
                 resizeMode='cover'
                 style={styles.descContainer}
             >
-                <Text style={styles.textDate}>{props.date + "\n" + props.time}</Text>
-                <Text style={styles.textContainer}>{props.desc}</Text>
+                <Text style={styles.textDate}>
+                    {props.date + "\n" + props.time}
+                </Text>
+                <Text
+                    style={[
+                        styles.textContainer,
+                        editModeON ? { display: "none" } : null,
+                    ]}
+                >
+                    {enteredText}
+                </Text>
+
+                <TextInput
+                    style={[
+                        styles.textInput,
+                        !editModeON ? { display: "none" } : null,
+                    ]}
+                    onChangeText={textInputHandler}
+                    value={enteredText}
+                    multiline={true}
+                    textAlign='left'
+                    textAlignVertical='top'
+                ></TextInput>
+
                 <View style={styles.buttonContainer}>
                     <View style={styles.button}>
                         <Button
-                            title='Edit Entry'
-                            // onPress={}
+                            title={editModeON ? "Done" : "Edit Entry"}
+                            onPress={handleEditMode}
                             color='black'
                         />
                     </View>
@@ -86,5 +121,15 @@ const styles = StyleSheet.create({
         textAlignVertical: "top",
         textAlign: "left",
         padding: 10,
+    },
+    textInput: {
+        borderWidth: 1,
+        borderColor: "#bbc",
+        backgroundColor: "#fff",
+        color: "#000123",
+        borderRadius: 8,
+        width: "96%",
+        height: "75%",
+        padding: 15,
     },
 });
