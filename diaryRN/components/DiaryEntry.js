@@ -35,14 +35,30 @@ const DiaryEntry = (props) => {
         } else {
             month = m.toString();
         }
-        return day + "." + month + "." + y.toString();
+        return (
+            day +
+            "." +
+            month +
+            "." +
+            y.toString()
+        );
+    };
+
+    const getCurrentTime = () => {
+        const time = new Date();
+
+        const hours = time.getHours();
+        const minutes = time.getMinutes();
+
+        return hours.toString() + ":" + minutes.toString();
     };
 
     const currentDate = getCurrentDate();
+    const currentTime = getCurrentTime();
 
     const addEntryHandler = () => {
         console.log("Entry added!");
-        props.updateEntriesList(enteredText, currentDate);
+        props.updateEntriesList(enteredText, currentDate, currentTime);
         setEnteredText("");
         props.handleModal();
     };
@@ -56,8 +72,6 @@ const DiaryEntry = (props) => {
     const addPhotoHandler = () => {
         console.log("Photo added!");
     };
-
-    
 
     return (
         <Modal visible={props.visible} animationType='slide'>

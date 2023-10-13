@@ -18,6 +18,7 @@ export default function App() {
     const [modalInfoVisible, setModalInfoVisible] = useState(false);
     const [entriesList, setEntriesList] = useState([]);
     const [counterID, setCounterID] = useState(1);
+    const [selectedEntry, setSelectedEntry] = useState(null);
 
     const handleNewEntryModal = () => {
         console.log("Modal state changed to " + !modalNewEntryVisible);
@@ -29,10 +30,15 @@ export default function App() {
         setModalInfoVisible(!modalInfoVisible);
     };
 
-    const updateEntriesList = (desc, curDate) => {
+    const updateEntriesList = (desc, curDate, curTime) => {
         setEntriesList((currentEntry) => [
             ...currentEntry,
-            { text: desc, date: curDate, id: counterID.toString() },
+            {
+                text: desc,
+                date: curDate,
+                id: counterID.toString(),
+                time: curTime,
+            },
         ]);
         setCounterID(counterID + 1);
     };
@@ -54,27 +60,32 @@ export default function App() {
 
                 <View style={styles.entriesContainer}>
                     <Text style={{ textAlign: "center" }}>
-                        {counterID == 1
-                            ? "There's nothing to display.\n Add new entry!"
+                        {counterID === 1
+                            ? "There's nothing to display.\n Add a new entry!"
                             : ""}
                     </Text>
                     <FlatList
                         data={entriesList}
-                        renderItem={(itemData) => {
-                            itemData.index;
-                            return (
+                        renderItem={({ item }) => (
+                            <>
                                 <EntryItem
-                                    visible={modalInfoVisible}
-                                    id={itemData.item.id}
-                                    date={itemData.item.date}
-                                    text={itemData.item.text}
-                                    handleModal={handleInfoModal}
+                                    id={item.id}
+                                    date={item.date}
+                                    time={item.time}
+                                    handleModal={() => setSelectedEntry(item)}
                                 />
-                            );
-                        }}
-                        keyExtractor={(item, index) => {
-                            return item.id;
-                        }}
+                                <EntryDisplay
+                                    visible={
+                                        selectedEntry &&
+                                        selectedEntry.id === item.id
+                                    }
+                                    date={item.date}
+                                    desc={item.text}
+                                    handleModal={() => setSelectedEntry(null)}
+                                />
+                            </>
+                        )}
+                        keyExtractor={(item) => item.id}
                         style={{ width: "100%" }}
                         contentContainerStyle={{ alignItems: "center" }}
                     />
