@@ -75,7 +75,7 @@ const DiaryEntry = (props) => {
 
     const addEntryHandler = () => {
         console.log("Entry added!");
-        props.updateEntriesList(enteredText, currentDate, currentTime);
+        props.updateEntriesList(enteredText, currentDate, currentTime, images);
         setEnteredText("");
         props.handleModal();
     };
@@ -115,12 +115,12 @@ const DiaryEntry = (props) => {
     };
 
     const galleryHandler = () => {
-        console.log("Otwarto galerię!");
+        // console.log("Otwarto galerię!");
         setModalMode(GALLERY);
     };
 
     const descriptionHandler = () => {
-        console.log("Otwarto opis!");
+        // console.log("Otwarto opis!");
         setModalMode(DESCRIBTION);
     };
 

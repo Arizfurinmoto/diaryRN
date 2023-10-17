@@ -1,7 +1,7 @@
 -> diary entries -> adding pages +
 -> edit diary entries (text) +/-
 -> deleting diary entries (pages) +
--> adding images
+-> adding images +
 -> deleting images
 -> date of a diary entry and date of an entry edition
 
