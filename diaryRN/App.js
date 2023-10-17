@@ -21,12 +21,12 @@ export default function App() {
     const [selectedEntry, setSelectedEntry] = useState(null);
 
     const handleNewEntryModal = () => {
-        console.log("Modal state changed to " + !modalNewEntryVisible);
+        // console.log("Modal state changed to " + !modalNewEntryVisible);
         setModalNewEntryVisible(!modalNewEntryVisible);
     };
 
     const handleInfoModal = () => {
-        console.log("Modal Info state changed to " + !modalInfoVisible);
+        // console.log("Modal Info state changed to " + !modalInfoVisible);
         setModalInfoVisible(!modalInfoVisible);
     };
 
@@ -34,7 +34,7 @@ export default function App() {
         setEntriesList((currentEntries) => {
             return currentEntries.filter((entry) => entry.id !== id);
         });
-        console.log("Delete");
+        // console.log("Delete");
     }
 
     const updateEntriesList = (desc, curDate, curTime) => {

@@ -5,9 +5,9 @@ import  Icon  from "@expo/vector-icons/MaterialCommunityIcons";
 const EntryItem = (props) => {
     return (
         <Pressable style={styles.entryContainer} onPress={props.handleModal}>
-            <View style={styles.idContainer}>
+            {/* <View style={styles.idContainer}>
                 <Text style={styles.id}>{props.id}</Text>
-            </View>
+            </View> */}
             <View style={styles.dateContainer}>
                 <Text style={styles.dateTextContainer}>{props.date}</Text>
                 <Text style={styles.dateTextContainer}>{props.time}</Text>

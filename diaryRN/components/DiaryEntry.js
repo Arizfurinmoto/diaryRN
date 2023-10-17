@@ -9,6 +9,7 @@ import {
     Text,
 } from "react-native";
 import paper from "../assets/paper.jpg";
+import * as ImagePicker from "expo-image-picker";
 
 const DiaryEntry = (props) => {
     const [enteredText, setEnteredText] = useState("");
@@ -35,13 +36,7 @@ const DiaryEntry = (props) => {
         } else {
             month = m.toString();
         }
-        return (
-            day +
-            "." +
-            month +
-            "." +
-            y.toString()
-        );
+        return day + "." + month + "." + y.toString();
     };
 
     const getCurrentTime = () => {
@@ -52,9 +47,9 @@ const DiaryEntry = (props) => {
         const h = time.getHours();
         const m = time.getMinutes();
 
-        if (m.toString().length < 2){
+        if (m.toString().length < 2) {
             minutes = "0" + m.toString();
-        } else{
+        } else {
             minutes = m.toString();
         }
 
@@ -83,14 +78,40 @@ const DiaryEntry = (props) => {
         props.handleModal();
     };
 
-    const addPhotoHandler = () => {
-        console.log("Photo added!");
+    const [images, setImages] = useState([]);
+
+    const addPhotoHandler = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            // allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+            allowsMultipleSelection: true,
+        });
+
+        console.log(result);
+
+        if (!result.canceled) {
+            console.log("Dlugosc: " + result.assets.length);
+
+            for(let i = 0; i<result.assets.length; i++){
+                // setImages(result.assets[i].uri);
+                setImages((currentImages) => [
+                    ...currentImages,
+                    result.assets[i].uri,
+                ]);
+            }
+            // setImages(result.assets[0].uri);
+            
+            // setImage(result.assets.uri);
+        }
     };
 
     return (
         <Modal visible={props.visible} animationType='slide'>
             <ImageBackground
-                source={paper}
+                source={images.length<=0 ? paper : {uri:images[1]}}
                 resizeMode='cover'
                 style={styles.inputContainer}
             >
@@ -116,6 +137,13 @@ const DiaryEntry = (props) => {
                         <Button
                             title='Add Photo'
                             onPress={addPhotoHandler}
+                            color='black'
+                        />
+                    </View>
+                    <View style={styles.button}>
+                        <Button
+                            title='Add Photo check'
+                            onPress={()=>{console.log(images)}}
                             color='black'
                         />
                     </View>
