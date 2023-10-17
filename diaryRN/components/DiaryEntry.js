@@ -7,12 +7,20 @@ import {
     Modal,
     ImageBackground,
     Text,
+    FlatList,
+    Image,
+    ScrollView,
 } from "react-native";
 import paper from "../assets/paper.jpg";
 import * as ImagePicker from "expo-image-picker";
 
+const DESCRIBTION = "DESCRIBTION";
+const GALLERY = "GALLERY";
+
 const DiaryEntry = (props) => {
     const [enteredText, setEnteredText] = useState("");
+    const [images, setImages] = useState([]);
+    const [modalMode, setModalMode] = useState(DESCRIBTION);
 
     const textInputHandler = (enteredText) => {
         setEnteredText(enteredText);
@@ -78,8 +86,6 @@ const DiaryEntry = (props) => {
         props.handleModal();
     };
 
-    const [images, setImages] = useState([]);
-
     const addPhotoHandler = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -90,12 +96,12 @@ const DiaryEntry = (props) => {
             allowsMultipleSelection: true,
         });
 
-        console.log(result);
+        // console.log(result);
 
         if (!result.canceled) {
-            console.log("Dlugosc: " + result.assets.length);
+            // console.log("Dlugosc: " + result.assets.length);
 
-            for(let i = 0; i<result.assets.length; i++){
+            for (let i = 0; i < result.assets.length; i++) {
                 // setImages(result.assets[i].uri);
                 setImages((currentImages) => [
                     ...currentImages,
@@ -103,17 +109,32 @@ const DiaryEntry = (props) => {
                 ]);
             }
             // setImages(result.assets[0].uri);
-            
+
             // setImage(result.assets.uri);
         }
     };
 
+    const galleryHandler = () => {
+        console.log("Otwarto galerię!");
+        setModalMode(GALLERY);
+    };
+
+    const descriptionHandler = () => {
+        console.log("Otwarto opis!");
+        setModalMode(DESCRIBTION);
+    };
+
+
     return (
         <Modal visible={props.visible} animationType='slide'>
             <ImageBackground
-                source={images.length<=0 ? paper : {uri:images[1]}}
+                // source={images.length<=0 ? paper : {uri:images[1]}}
+                source={paper}
                 resizeMode='cover'
-                style={styles.inputContainer}
+                style={[
+                    styles.inputContainer,
+                    modalMode == DESCRIBTION ? null : { display: "none" },
+                ]}
             >
                 <Text style={styles.textDate}>{currentDate}</Text>
                 <TextInput
@@ -135,24 +156,108 @@ const DiaryEntry = (props) => {
                     </View>
                     <View style={styles.button}>
                         <Button
-                            title='Add Photo'
-                            onPress={addPhotoHandler}
+                            title='Gallery'
+                            // onPress={addPhotoHandler}
+                            onPress={galleryHandler}
                             color='black'
                         />
                     </View>
-                    <View style={styles.button}>
+                    {/* <View style={styles.button}>
                         <Button
                             title='Add Photo check'
                             onPress={()=>{console.log(images)}}
                             color='black'
                         />
-                    </View>
+                    </View> */}
                 </View>
                 <View style={styles.buttonContainer}>
                     <View style={styles.button}>
                         <Button
                             title='Cancel'
                             onPress={cancelHandler}
+                            color='red'
+                        />
+                    </View>
+                </View>
+                <FlatList
+                    data={images}
+                    renderItem={({ item }) => (
+                        <>
+                            <Image
+                                style={{ height: 400, width: "100%" }}
+                                source={{ uri: item }}
+                            ></Image>
+                            <Text>{item}</Text>
+                        </>
+                    )}
+                    keyExtractor={() => {
+                        return Math.random().toString();
+                    }}
+                    style={{ width: "100%" }}
+                    contentContainerStyle={{ alignItems: "center" }}
+                />
+            </ImageBackground>
+
+            <ImageBackground
+                // source={images.length<=0 ? paper : {uri:images[1]}}
+                source={paper}
+                resizeMode='cover'
+                style={[
+                    styles.inputContainer,
+                    modalMode == GALLERY ? null : { display: "none" },
+                ]}
+            >
+                <Text style={styles.textDate}>{currentDate}</Text>
+
+
+                <FlatList
+                    data={images}
+                    renderItem={({ item }) => (
+                            <Image
+                                style={{ height: 220, width: 330, marginVertical:10}}
+                                source={{ uri: item }}
+                                resizeMode="contain"
+                            ></Image>
+                    )}
+                    keyExtractor={() => {
+                        return Math.random().toString();
+                    }}
+                    style={{ width: "100%" }}
+                    contentContainerStyle={{ alignItems: "center" }}
+                />
+
+                <View style={styles.buttonContainer}>
+                    <View style={styles.button}>
+                        <Button
+                            title='Description'
+                            onPress={descriptionHandler}
+                            color='black'
+                        />
+                    </View>
+                    <View style={styles.button}>
+                        <Button
+                            title='Add Photo'
+                            // onPress={addPhotoHandler}
+                            onPress={addPhotoHandler}
+                            color='black'
+                        />
+                    </View>
+                    {/* <View style={styles.button}>
+                        <Button
+                            title='Add Photo check'
+                            onPress={()=>{console.log(images)}}
+                            color='black'
+                        />
+                    </View> */}
+                </View>
+                <View style={styles.buttonContainer}>
+                    <View style={styles.button}>
+                        <Button
+                            title='Cancel'
+                            // onPress={cancelHandler}
+                            onPress={() => {
+                                console.log({ uri: images[1] });
+                            }}
                             color='red'
                         />
                     </View>
