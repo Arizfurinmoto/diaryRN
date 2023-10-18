@@ -11,6 +11,7 @@ import {
     Image,
     ScrollView,
 } from "react-native";
+import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import paper from "../assets/paper.jpg";
 import * as ImagePicker from "expo-image-picker";
 
@@ -21,6 +22,7 @@ const DiaryEntry = (props) => {
     const [enteredText, setEnteredText] = useState("");
     const [images, setImages] = useState([]);
     const [modalMode, setModalMode] = useState(DESCRIBTION);
+    let counter = 0;
 
     const textInputHandler = (enteredText) => {
         setEnteredText(enteredText);
@@ -75,8 +77,15 @@ const DiaryEntry = (props) => {
 
     const addEntryHandler = () => {
         console.log("Entry added!");
-        props.updateEntriesList(enteredText, currentDate, currentTime, images);
+        props.updateEntriesList(
+            enteredText,
+            currentDate,
+            currentTime,
+            images,
+            counter
+        );
         setEnteredText("");
+        setImages([]);
         props.handleModal();
     };
 
@@ -100,14 +109,21 @@ const DiaryEntry = (props) => {
 
         if (!result.canceled) {
             // console.log("Dlugosc: " + result.assets.length);
+            const updatedImages = result.assets.map((asset) => ({
+                src: asset.uri,
+                id: counter++,
+            }));
+            setImages([...images, ...updatedImages]);
 
-            for (let i = 0; i < result.assets.length; i++) {
-                // setImages(result.assets[i].uri);
-                setImages((currentImages) => [
-                    ...currentImages,
-                    result.assets[i].uri,
-                ]);
-            }
+            // for (let i = 0; i < result.assets.length; i++) {
+            //     // setImages(result.assets[i].uri);
+            //     setImages((currentImages) => [
+            //         ...currentImages,
+            //         { src: result.assets[i].uri, id: counterImageID },
+            //     ]);
+            //     setCounterImageID(counterImageID++);
+            // }
+
             // setImages(result.assets[0].uri);
 
             // setImage(result.assets.uri);
@@ -124,6 +140,18 @@ const DiaryEntry = (props) => {
         setModalMode(DESCRIBTION);
     };
 
+    const deleteEntryHandler = (id) => {
+        setImages((currentImages) => {
+            return currentImages.filter((img) => img.id !== id);
+        });
+    };
+
+    // function deleteEntryHandler(id) {
+    //     setCounterImageID((currentImages) => {
+    //         return currentImages.filter((img) => img.id !== id);
+    //     });
+    //     // console.log("Delete");
+    // }
 
     return (
         <Modal visible={props.visible} animationType='slide'>
@@ -179,13 +207,13 @@ const DiaryEntry = (props) => {
                         />
                     </View>
                 </View>
-                <FlatList
+                {/* <FlatList
                     data={images}
                     renderItem={({ item }) => (
                         <>
                             <Image
                                 style={{ height: 400, width: "100%" }}
-                                source={{ uri: item }}
+                                source={{ uri: item.src }}
                             ></Image>
                             <Text>{item}</Text>
                         </>
@@ -195,7 +223,7 @@ const DiaryEntry = (props) => {
                     }}
                     style={{ width: "100%" }}
                     contentContainerStyle={{ alignItems: "center" }}
-                />
+                /> */}
             </ImageBackground>
 
             <ImageBackground
@@ -209,19 +237,29 @@ const DiaryEntry = (props) => {
             >
                 <Text style={styles.textDate}>{currentDate}</Text>
 
-
                 <FlatList
                     data={images}
                     renderItem={({ item }) => (
+                        <View>
                             <Image
-                                style={{ height: 220, width: 330, marginVertical:10}}
-                                source={{ uri: item }}
-                                resizeMode="contain"
+                                style={styles.imageStyle}
+                                source={{ uri: item.src }}
+                                resizeMode='contain'
                             ></Image>
+                            <View style={styles.imageInsideContainer}>
+                                <Icon
+                                    name='close-circle-outline'
+                                    size={50}
+                                    color={"red"}
+                                    onPress={deleteEntryHandler.bind(
+                                        this,
+                                        item.id
+                                    )}
+                                />
+                            </View>
+                        </View>
                     )}
-                    keyExtractor={() => {
-                        return Math.random().toString();
-                    }}
+                    keyExtractor={(item) => item.id}
                     style={{ width: "100%" }}
                     contentContainerStyle={{ alignItems: "center" }}
                 />
@@ -254,10 +292,7 @@ const DiaryEntry = (props) => {
                     <View style={styles.button}>
                         <Button
                             title='Cancel'
-                            // onPress={cancelHandler}
-                            onPress={() => {
-                                console.log({ uri: images[1] });
-                            }}
+                            onPress={cancelHandler}
                             color='red'
                         />
                     </View>
@@ -302,5 +337,20 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         fontWeight: "bold",
         marginBottom: 5,
+    },
+    imageInsideContainer: {
+        position: "absolute",
+        top: "0%",
+        right: "0%",
+        transform: [{ translateX: 15 }, { translateY: -5 }],
+    },
+    imageStyle: {
+        position: "relative",
+        height: 220,
+        width: 330,
+        marginVertical: 10,
+        borderColor: "#000",
+        borderWidth: 1,
+        borderRadius: 3,
     },
 });

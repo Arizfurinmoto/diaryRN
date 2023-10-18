@@ -21,6 +21,7 @@ const EntryDisplay = (props) => {
     const [editModeON, setEditModeON] = useState(false);
     const [modalMode, setModalMode] = useState(DESCRIBTION);
     const [images, setImages] = useState(props.images);
+    let counter = props.counter;
 
     const textInputHandler = (enteredText) => {
         setEnteredText(enteredText);
@@ -56,12 +57,11 @@ const EntryDisplay = (props) => {
         });
 
         if (!result.canceled) {
-            for (let i = 0; i < result.assets.length; i++) {
-                setImages((currentImages) => [
-                    ...currentImages,
-                    result.assets[i].uri,
-                ]);
-            }
+            const updatedImages = result.assets.map((asset) => ({
+                src: asset.uri,
+                id: counter++,
+            }));
+            setImages([...images, ...updatedImages]);
         }
     };
 
@@ -144,18 +144,12 @@ const EntryDisplay = (props) => {
                     data={images}
                     renderItem={({ item }) => (
                         <Image
-                            style={{
-                                height: 220,
-                                width: 330,
-                                marginVertical: 10,
-                            }}
-                            source={{ uri: item }}
-                            resizeMode='contain'
+                            style={styles.imageStyle}
+                            source={{ uri: item.src }}
+                            resizeMode='cover'
                         ></Image>
                     )}
-                    keyExtractor={() => {
-                        return Math.random().toString();
-                    }}
+                    keyExtractor={(item) => item.id}
                     style={{ width: "100%" }}
                     contentContainerStyle={{ alignItems: "center" }}
                 />
@@ -250,5 +244,14 @@ const styles = StyleSheet.create({
         width: "96%",
         height: "75%",
         padding: 15,
+    },
+    imageStyle: {
+        position: "relative",
+        height: 220,
+        width: 330,
+        marginVertical: 10,
+        borderColor: "#000",
+        borderWidth: 1,
+        borderRadius: 3,
     },
 });

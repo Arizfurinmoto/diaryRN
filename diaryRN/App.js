@@ -37,7 +37,7 @@ export default function App() {
         // console.log("Delete");
     }
 
-    const updateEntriesList = (desc, curDate, curTime, images) => {
+    const updateEntriesList = (desc, curDate, curTime, images, counter) => {
         setEntriesList((currentEntry) => [
             ...currentEntry,
             {
@@ -46,6 +46,7 @@ export default function App() {
                 id: counterID.toString(),
                 time: curTime,
                 images: images,
+                counter: counter,
             },
         ]);
         setCounterID(counterID + 1);
@@ -68,7 +69,7 @@ export default function App() {
 
                 <View style={styles.entriesContainer}>
                     <Text style={{ textAlign: "center" }}>
-                        {counterID === 1
+                        {entriesList.length <= 0
                             ? "There's nothing to display.\n Add a new entry!"
                             : ""}
                     </Text>
