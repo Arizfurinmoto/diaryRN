@@ -1,12 +1,15 @@
 -> diary entries -> adding pages +
--> edit diary entries (text) +/-
+-> edit diary entries (text) +
 -> deleting diary entries (pages) +
 -> adding images +
--> deleting images
--> date of a diary entry and date of an entry edition
+-> deleting images +
+-> date of a diary entry +
+-> date of an entry edition
 
 -> display entries +
 
--> add a data base to be able to save entries
+-> add a database to be able to save entries
+
+-> move image item to separate component (to fix zoom and options display)
 
 Photo by Marjan Blan on Unsplash (paper background)  

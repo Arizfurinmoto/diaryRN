@@ -93,6 +93,9 @@ const DiaryEntry = (props) => {
     const cancelHandler = () => {
         console.log(getCurrentDate());
         setEnteredText("");
+        setImages([]);
+        setModalMode(DESCRIBTION);
+        setIdTable([]);
         props.handleModal();
     };
 

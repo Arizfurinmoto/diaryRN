@@ -26,11 +26,11 @@ const EntryDisplay = (props) => {
     const [images, setImages] = useState(props.images);
     const [idTable, setIdTable] = useState(props.idTable);
     const [imgPressed, setImgPressed] = useState(false);
+    const [imageVisible, setImageVisible] = useState(false);
     // let counter = props.counter;
-    const [visible, setIsVisible] = useState(false);
 
     const zoomHandle = () =>{
-        setIsVisible(true);
+        setImageVisible(true);
     };
 
     const imagePressedHandle = () => {
@@ -153,7 +153,12 @@ const EntryDisplay = (props) => {
                             color='black'
                         />
                     </View>
-                    <View style={styles.button}>
+                    <View
+                        style={[
+                            styles.button,
+                            editModeON ? { display: "none" } : null,
+                        ]}
+                    >
                         <Button
                             title='Gallery'
                             onPress={galleryHandler}
@@ -162,7 +167,12 @@ const EntryDisplay = (props) => {
                     </View>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <View style={styles.button}>
+                    <View
+                        style={[
+                            styles.button,
+                            editModeON ? { display: "none" } : null,
+                        ]}
+                    >
                         <Button
                             title='Cancel'
                             onPress={cancelHandler}
@@ -192,8 +202,8 @@ const EntryDisplay = (props) => {
                             <ImageView
                                 images={[{ uri: item.src }]}
                                 imageIndex={0}
-                                visible={visible}
-                                onRequestClose={() => setIsVisible(false)}
+                                visible={imageVisible}
+                                onRequestClose={() => setImageVisible(false)}
                             />
 
                             <Pressable onPress={imagePressedHandle}>
