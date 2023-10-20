@@ -9,7 +9,6 @@ import {
     Text,
     FlatList,
     Image,
-    ScrollView,
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import paper from "../assets/paper.jpg";
@@ -22,7 +21,6 @@ const DiaryEntry = (props) => {
     const [enteredText, setEnteredText] = useState("");
     const [images, setImages] = useState([]);
     const [modalMode, setModalMode] = useState(DESCRIBTION);
-    const [counter, setCounter] = useState(0);
     const [idTable, setIdTable] = useState([]);
 
     const textInputHandler = (enteredText) => {
@@ -122,49 +120,26 @@ const DiaryEntry = (props) => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            // allowsEditing: true,
-            // aspect: [4, 3],
             quality: 1,
             allowsMultipleSelection: true,
         });
 
-        // console.log(result);
-
         if (!result.canceled) {
-            // console.log("Dlugosc: " + result.assets.length);
             const updatedImages = result.assets.map((asset) => {
-                // setCounter(counter+1);
-                // console.log(counter);
                 return {
                     src: asset.uri,
                     id: idHandler(),
-                    // id: counter,
                 };
             });
             setImages([...images, ...updatedImages]);
-
-            // for (let i = 0; i < result.assets.length; i++) {
-            //     // setImages(result.assets[i].uri);
-            //     setImages((currentImages) => [
-            //         ...currentImages,
-            //         { src: result.assets[i].uri, id: counterImageID },
-            //     ]);
-            //     setCounterImageID(counterImageID++);
-            // }
-
-            // setImages(result.assets[0].uri);
-
-            // setImage(result.assets.uri);
         }
     };
 
     const galleryHandler = () => {
-        // console.log("Otwarto galerię!");
         setModalMode(GALLERY);
     };
 
     const descriptionHandler = () => {
-        // console.log("Otwarto opis!");
         setModalMode(DESCRIBTION);
     };
 
@@ -174,17 +149,9 @@ const DiaryEntry = (props) => {
         });
     };
 
-    // function deleteEntryHandler(id) {
-    //     setCounterImageID((currentImages) => {
-    //         return currentImages.filter((img) => img.id !== id);
-    //     });
-    //     // console.log("Delete");
-    // }
-
     return (
         <Modal visible={props.visible} animationType='slide'>
             <ImageBackground
-                // source={images.length<=0 ? paper : {uri:images[1]}}
                 source={paper}
                 resizeMode='cover'
                 style={[
@@ -213,18 +180,10 @@ const DiaryEntry = (props) => {
                     <View style={styles.button}>
                         <Button
                             title='Gallery'
-                            // onPress={addPhotoHandler}
                             onPress={galleryHandler}
                             color='black'
                         />
                     </View>
-                    {/* <View style={styles.button}>
-                        <Button
-                            title='Add Photo check'
-                            onPress={()=>{console.log(images)}}
-                            color='black'
-                        />
-                    </View> */}
                 </View>
                 <View style={styles.buttonContainer}>
                     <View style={styles.button}>
@@ -235,27 +194,9 @@ const DiaryEntry = (props) => {
                         />
                     </View>
                 </View>
-                {/* <FlatList
-                    data={images}
-                    renderItem={({ item }) => (
-                        <>
-                            <Image
-                                style={{ height: 400, width: "100%" }}
-                                source={{ uri: item.src }}
-                            ></Image>
-                            <Text>{item}</Text>
-                        </>
-                    )}
-                    keyExtractor={() => {
-                        return Math.random().toString();
-                    }}
-                    style={{ width: "100%" }}
-                    contentContainerStyle={{ alignItems: "center" }}
-                /> */}
             </ImageBackground>
 
             <ImageBackground
-                // source={images.length<=0 ? paper : {uri:images[1]}}
                 source={paper}
                 resizeMode='cover'
                 style={[
@@ -315,28 +256,11 @@ const DiaryEntry = (props) => {
                     <View style={styles.button}>
                         <Button
                             title='Add Image'
-                            // onPress={addPhotoHandler}
                             onPress={addImageHandler}
                             color='black'
                         />
                     </View>
-                    {/* <View style={styles.button}>
-                        <Button
-                            title='Add Photo check'
-                            onPress={()=>{console.log(images)}}
-                            color='black'
-                        />
-                    </View> */}
                 </View>
-                {/* <View style={styles.buttonContainer}>
-                    <View style={styles.button}>
-                        <Button
-                            title='Cancel'
-                            onPress={cancelHandler}
-                            color='red'
-                        />
-                    </View>
-                </View> */}
             </ImageBackground>
         </Modal>
     );

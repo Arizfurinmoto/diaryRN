@@ -53,12 +53,10 @@ const styles = StyleSheet.create({
         width: 30,
         height: 30,
         justifyContent: "center",
-        // backgroundColor: "red",
     },
     dateContainer: {
         width: "90%",
         justifyContent: "space-around",
         flexDirection: "row",
-        // backgroundColor: "blue",
     },
 });

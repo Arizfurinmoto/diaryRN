@@ -4,14 +4,12 @@
 -> adding images +
 -> deleting images +
 -> date of a diary entry +
--> date of an entry edition
-
 -> display entries +
+-> move image item to separate component (to fix zoom and options display)+
 
 -> add a database to be able to save entries
 
--> move image item to separate component (to fix zoom and options display)+
-
 -> scrolling through diary entries from EntryDisplay view (like scrolling through normal, paper pages)
+-> date of an entry edition
 
 Photo by Marjan Blan on Unsplash (paper background)  

@@ -8,11 +8,7 @@ import {
     ImageBackground,
     Text,
     FlatList,
-    Image,
-    Pressable,
 } from "react-native";
-import ImageView from "react-native-image-viewing";
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
 import paper from "../assets/paper.jpg";
 import ImageItem from "./ImageItem";
@@ -26,15 +22,6 @@ const EntryDisplay = (props) => {
     const [modalMode, setModalMode] = useState(DESCRIBTION);
     const [images, setImages] = useState(props.images);
     const [idTable, setIdTable] = useState(props.idTable);
-    // const [imgPressed, setImgPressed] = useState(false);
-    // const [imageVisible, setImageVisible] = useState(false);
-    // let counter = props.counter;
-
-    // const zoomHandle = () =>{
-    //     setImageVisible(true);
-    // };
-
-
 
     const deleteEntryHandler = (id) => {
         setImages((currentImages) => {
@@ -61,7 +48,6 @@ const EntryDisplay = (props) => {
     };
 
     const galleryHandler = () => {
-        // console.log("Otwarto galerię!");
         if (editModeON == true) {
             handleEditMode();
         }
@@ -69,7 +55,6 @@ const EntryDisplay = (props) => {
     };
 
     const descriptionHandler = () => {
-        // console.log("Otwarto opis!");
         setModalMode(DESCRIBTION);
     };
 
@@ -95,7 +80,6 @@ const EntryDisplay = (props) => {
     const addImageHandler = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            // aspect: [4, 3],
             quality: 1,
             allowsMultipleSelection: true,
         });
@@ -182,7 +166,6 @@ const EntryDisplay = (props) => {
             </ImageBackground>
 
             <ImageBackground
-                // source={images.length<=0 ? paper : {uri:images[1]}}
                 source={paper}
                 resizeMode='cover'
                 style={[
@@ -197,49 +180,11 @@ const EntryDisplay = (props) => {
                 <FlatList
                     data={images}
                     renderItem={({ item }) => (
-                        <>
                             <ImageItem
                                 uri={{ uri: item.src }}
                                 deleteEntryHandler={deleteEntryHandler}
                                 id={item.id}
                             />
-                            {/* <ImageView
-                                images={[{ uri: item.src }]}
-                                imageIndex={0}
-                                visible={imageVisible}
-                                onRequestClose={() => setImageVisible(false)}
-                            />
-
-                            <Pressable onPress={imagePressedHandle}>
-                                <Image
-                                    style={styles.imageStyle}
-                                    source={{ uri: item.src }}
-                                    resizeMode='cover'
-                                ></Image>
-                                <View
-                                    style={[
-                                        styles.imageStylePressed,
-                                        imgPressed ? null : { display: "none" },
-                                    ]}
-                                >
-                                    <Icon
-                                        name='eye-circle'
-                                        size={50}
-                                        color={"black"}
-                                        onPress={zoomHandle}
-                                    />
-                                    <Icon
-                                        name='delete-circle'
-                                        size={50}
-                                        color={"red"}
-                                        onPress={deleteEntryHandler.bind(
-                                            this,
-                                            item.id
-                                        )}
-                                    />
-                                </View>
-                            </Pressable> */}
-                        </>
                     )}
                     keyExtractor={(item) => item.id}
                     style={{ width: "100%" }}
@@ -261,13 +206,6 @@ const EntryDisplay = (props) => {
                             color='black'
                         />
                     </View>
-                    {/* <View style={styles.button}>
-                        <Button
-                            title='Add Photo check'
-                            onPress={()=>{console.log(images)}}
-                            color='black'
-                        />
-                    </View> */}
                 </View>
                 <View style={styles.buttonContainer}>
                     <View style={styles.button}>
@@ -336,24 +274,5 @@ const styles = StyleSheet.create({
         width: "96%",
         height: "75%",
         padding: 15,
-    },
-    imageStyle: {
-        position: "relative",
-        height: 220,
-        width: 330,
-        marginVertical: 10,
-        borderColor: "#000",
-        borderWidth: 1,
-        borderRadius: 3,
-    },
-    imageStylePressed: {
-        position: "absolute",
-        height: "25%",
-        width: "100%",
-        top: "38.5%",
-        flexDirection: "row",
-        justifyContent: "space-around",
-        backgroundColor: "#ffffffb7",
-        alignItems:"center",
     },
 });
