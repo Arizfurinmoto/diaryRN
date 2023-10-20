@@ -94,6 +94,7 @@ export default function App() {
                                     time={item.time}
                                     handleModal={() => setSelectedEntry(null)}
                                     images={item.images}
+                                    idTable={item.idTable}
                                 />
                             </>
                         )}

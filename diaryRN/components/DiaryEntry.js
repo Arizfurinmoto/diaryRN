@@ -273,7 +273,7 @@ const DiaryEntry = (props) => {
                             ></Image>
                             <View style={styles.imageInsideContainer}>
                                 <Icon
-                                    name='close-circle-outline'
+                                    name='delete-circle-outline'
                                     size={50}
                                     color={"red"}
                                     onPress={deleteEntryHandler.bind(

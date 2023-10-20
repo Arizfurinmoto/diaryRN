@@ -9,7 +9,10 @@ import {
     Text,
     FlatList,
     Image,
+    Pressable,
 } from "react-native";
+import ImageView from "react-native-image-viewing";
+import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
 import paper from "../assets/paper.jpg";
 
@@ -22,7 +25,23 @@ const EntryDisplay = (props) => {
     const [modalMode, setModalMode] = useState(DESCRIBTION);
     const [images, setImages] = useState(props.images);
     const [idTable, setIdTable] = useState(props.idTable);
+    const [imgPressed, setImgPressed] = useState(false);
     // let counter = props.counter;
+    const [visible, setIsVisible] = useState(false);
+
+    const zoomHandle = () =>{
+        setIsVisible(true);
+    };
+
+    const imagePressedHandle = () => {
+        setImgPressed(!imgPressed);
+    };
+
+    const deleteEntryHandler = (id) => {
+        setImages((currentImages) => {
+            return currentImages.filter((img) => img.id !== id);
+        });
+    };
 
     const textInputHandler = (enteredText) => {
         setEnteredText(enteredText);
@@ -169,11 +188,44 @@ const EntryDisplay = (props) => {
                 <FlatList
                     data={images}
                     renderItem={({ item }) => (
-                        <Image
-                            style={styles.imageStyle}
-                            source={{ uri: item.src }}
-                            resizeMode='cover'
-                        ></Image>
+                        <>
+                            <ImageView
+                                images={[{ uri: item.src }]}
+                                imageIndex={0}
+                                visible={visible}
+                                onRequestClose={() => setIsVisible(false)}
+                            />
+
+                            <Pressable onPress={imagePressedHandle}>
+                                <Image
+                                    style={styles.imageStyle}
+                                    source={{ uri: item.src }}
+                                    resizeMode='cover'
+                                ></Image>
+                                <View
+                                    style={[
+                                        styles.imageStylePressed,
+                                        imgPressed ? null : { display: "none" },
+                                    ]}
+                                >
+                                    <Icon
+                                        name='eye-circle'
+                                        size={50}
+                                        color={"black"}
+                                        onPress={zoomHandle}
+                                    />
+                                    <Icon
+                                        name='delete-circle'
+                                        size={50}
+                                        color={"red"}
+                                        onPress={deleteEntryHandler.bind(
+                                            this,
+                                            item.id
+                                        )}
+                                    />
+                                </View>
+                            </Pressable>
+                        </>
                     )}
                     keyExtractor={(item) => item.id}
                     style={{ width: "100%" }}
@@ -279,5 +331,15 @@ const styles = StyleSheet.create({
         borderColor: "#000",
         borderWidth: 1,
         borderRadius: 3,
+    },
+    imageStylePressed: {
+        position: "absolute",
+        height: "25%",
+        width: "100%",
+        top: "38.5%",
+        flexDirection: "row",
+        justifyContent: "space-around",
+        backgroundColor: "#ffffffb7",
+        alignItems:"center",
     },
 });
