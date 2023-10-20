@@ -21,7 +21,8 @@ const EntryDisplay = (props) => {
     const [editModeON, setEditModeON] = useState(false);
     const [modalMode, setModalMode] = useState(DESCRIBTION);
     const [images, setImages] = useState(props.images);
-    let counter = props.counter;
+    const [idTable, setIdTable] = useState(props.idTable);
+    // let counter = props.counter;
 
     const textInputHandler = (enteredText) => {
         setEnteredText(enteredText);
@@ -48,10 +49,29 @@ const EntryDisplay = (props) => {
         setModalMode(DESCRIBTION);
     };
 
+    const idHandler = () => {
+        let check = false;
+        let num;
+        do {
+            num = Math.random();
+            check = false;
+            for (const id of idTable) {
+                if (num == id) {
+                    check = true;
+                    console.log(`${num} == ${id}`);
+                    break;
+                }
+            }
+        } while (check);
+        console.log(num);
+        setIdTable([...idTable, num]);
+        return num;
+    };
+
     const addPhotoHandler = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            aspect: [4, 3],
+            // aspect: [4, 3],
             quality: 1,
             allowsMultipleSelection: true,
         });
@@ -59,7 +79,7 @@ const EntryDisplay = (props) => {
         if (!result.canceled) {
             const updatedImages = result.assets.map((asset) => ({
                 src: asset.uri,
-                id: counter++,
+                id: idHandler(),
             }));
             setImages([...images, ...updatedImages]);
         }

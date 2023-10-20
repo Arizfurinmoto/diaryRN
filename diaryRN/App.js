@@ -37,7 +37,7 @@ export default function App() {
         // console.log("Delete");
     }
 
-    const updateEntriesList = (desc, curDate, curTime, images, counter) => {
+    const updateEntriesList = (desc, curDate, curTime, images, idTable) => {
         setEntriesList((currentEntry) => [
             ...currentEntry,
             {
@@ -46,7 +46,7 @@ export default function App() {
                 id: counterID.toString(),
                 time: curTime,
                 images: images,
-                counter: counter,
+                idTable: idTable,
             },
         ]);
         setCounterID(counterID + 1);

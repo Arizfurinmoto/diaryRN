@@ -22,7 +22,8 @@ const DiaryEntry = (props) => {
     const [enteredText, setEnteredText] = useState("");
     const [images, setImages] = useState([]);
     const [modalMode, setModalMode] = useState(DESCRIBTION);
-    let counter = 0;
+    const [counter, setCounter] = useState(0);
+    const [idTable, setIdTable] = useState([]);
 
     const textInputHandler = (enteredText) => {
         setEnteredText(enteredText);
@@ -82,7 +83,7 @@ const DiaryEntry = (props) => {
             currentDate,
             currentTime,
             images,
-            counter
+            idTable
         );
         setEnteredText("");
         setImages([]);
@@ -95,12 +96,31 @@ const DiaryEntry = (props) => {
         props.handleModal();
     };
 
+    const idHandler = () => {
+        let check = false;
+        let num;
+        do {
+            num = Math.random();
+            check = false;
+            for (const id of idTable) {
+                if (num == id) {
+                    check = true;
+                    console.log(`${num} == ${id}`);
+                    break;
+                }
+            }
+        } while (check);
+        console.log(num);
+        setIdTable([...idTable, num]);
+        return num;
+    };
+
     const addPhotoHandler = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             // allowsEditing: true,
-            aspect: [4, 3],
+            // aspect: [4, 3],
             quality: 1,
             allowsMultipleSelection: true,
         });
@@ -109,10 +129,15 @@ const DiaryEntry = (props) => {
 
         if (!result.canceled) {
             // console.log("Dlugosc: " + result.assets.length);
-            const updatedImages = result.assets.map((asset) => ({
-                src: asset.uri,
-                id: counter++,
-            }));
+            const updatedImages = result.assets.map((asset) => {
+                // setCounter(counter+1);
+                // console.log(counter);
+                return {
+                    src: asset.uri,
+                    id: idHandler(),
+                    // id: counter,
+                };
+            });
             setImages([...images, ...updatedImages]);
 
             // for (let i = 0; i < result.assets.length; i++) {
@@ -244,7 +269,7 @@ const DiaryEntry = (props) => {
                             <Image
                                 style={styles.imageStyle}
                                 source={{ uri: item.src }}
-                                resizeMode='contain'
+                                resizeMode='cover'
                             ></Image>
                             <View style={styles.imageInsideContainer}>
                                 <Icon
