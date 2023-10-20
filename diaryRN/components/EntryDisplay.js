@@ -35,12 +35,18 @@ const EntryDisplay = (props) => {
     };
 
     const handleEditMode = () => {
-        setEditModeON(!editModeON);
+        if (editModeON == true) {
+            setEditModeON(false);
+        } else {
+            setEditModeON(true);
+        }
     };
 
     const galleryHandler = () => {
         // console.log("Otwarto galerię!");
-        handleEditMode();
+        if (editModeON == true) {
+            handleEditMode();
+        }
         setModalMode(GALLERY);
     };
 
