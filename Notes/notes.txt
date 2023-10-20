@@ -10,6 +10,8 @@
 
 -> add a database to be able to save entries
 
--> move image item to separate component (to fix zoom and options display)
+-> move image item to separate component (to fix zoom and options display)+
+
+-> scrolling through diary entries from EntryDisplay view (like scrolling through normal, paper pages)
 
 Photo by Marjan Blan on Unsplash (paper background)  

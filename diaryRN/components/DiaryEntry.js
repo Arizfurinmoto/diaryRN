@@ -118,7 +118,7 @@ const DiaryEntry = (props) => {
         return num;
     };
 
-    const addPhotoHandler = async () => {
+    const addImageHandler = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -265,46 +265,58 @@ const DiaryEntry = (props) => {
             >
                 <Text style={styles.textDate}>{currentDate}</Text>
 
-                <FlatList
-                    data={images}
-                    renderItem={({ item }) => (
-                        <View>
-                            <Image
-                                style={styles.imageStyle}
-                                source={{ uri: item.src }}
-                                resizeMode='cover'
-                            ></Image>
-                            <View style={styles.imageInsideContainer}>
-                                <Icon
-                                    name='delete-circle-outline'
-                                    size={50}
-                                    color={"red"}
-                                    onPress={deleteEntryHandler.bind(
-                                        this,
-                                        item.id
-                                    )}
-                                />
+                {images.length > 0 ? (
+                    <FlatList
+                        data={images}
+                        renderItem={({ item }) => (
+                            <View>
+                                <Image
+                                    style={styles.imageStyle}
+                                    source={{ uri: item.src }}
+                                    resizeMode='cover'
+                                ></Image>
+                                <View style={styles.imageInsideContainer}>
+                                    <Icon
+                                        name='delete-circle-outline'
+                                        size={50}
+                                        color={"red"}
+                                        onPress={deleteEntryHandler.bind(
+                                            this,
+                                            item.id
+                                        )}
+                                    />
+                                </View>
                             </View>
-                        </View>
-                    )}
-                    keyExtractor={(item) => item.id}
-                    style={{ width: "100%" }}
-                    contentContainerStyle={{ alignItems: "center" }}
-                />
+                        )}
+                        keyExtractor={(item) => item.id}
+                        style={{ width: "100%" }}
+                        contentContainerStyle={{ alignItems: "center" }}
+                    />
+                ) : (
+                    <Text
+                        style={{
+                            height: "80%",
+                            textAlign: "center",
+                            textAlignVertical: "center",
+                        }}
+                    >
+                        This gallery is empty.
+                    </Text>
+                )}
 
                 <View style={styles.buttonContainer}>
                     <View style={styles.button}>
                         <Button
-                            title='Description'
+                            title='Back'
                             onPress={descriptionHandler}
                             color='black'
                         />
                     </View>
                     <View style={styles.button}>
                         <Button
-                            title='Add Photo'
+                            title='Add Image'
                             // onPress={addPhotoHandler}
-                            onPress={addPhotoHandler}
+                            onPress={addImageHandler}
                             color='black'
                         />
                     </View>
@@ -316,7 +328,7 @@ const DiaryEntry = (props) => {
                         />
                     </View> */}
                 </View>
-                <View style={styles.buttonContainer}>
+                {/* <View style={styles.buttonContainer}>
                     <View style={styles.button}>
                         <Button
                             title='Cancel'
@@ -324,7 +336,7 @@ const DiaryEntry = (props) => {
                             color='red'
                         />
                     </View>
-                </View>
+                </View> */}
             </ImageBackground>
         </Modal>
     );

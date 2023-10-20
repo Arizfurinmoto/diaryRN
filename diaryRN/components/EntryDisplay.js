@@ -15,6 +15,7 @@ import ImageView from "react-native-image-viewing";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
 import paper from "../assets/paper.jpg";
+import ImageItem from "./ImageItem";
 
 const DESCRIBTION = "DESCRIBTION";
 const GALLERY = "GALLERY";
@@ -25,17 +26,15 @@ const EntryDisplay = (props) => {
     const [modalMode, setModalMode] = useState(DESCRIBTION);
     const [images, setImages] = useState(props.images);
     const [idTable, setIdTable] = useState(props.idTable);
-    const [imgPressed, setImgPressed] = useState(false);
-    const [imageVisible, setImageVisible] = useState(false);
+    // const [imgPressed, setImgPressed] = useState(false);
+    // const [imageVisible, setImageVisible] = useState(false);
     // let counter = props.counter;
 
-    const zoomHandle = () =>{
-        setImageVisible(true);
-    };
+    // const zoomHandle = () =>{
+    //     setImageVisible(true);
+    // };
 
-    const imagePressedHandle = () => {
-        setImgPressed(!imgPressed);
-    };
+
 
     const deleteEntryHandler = (id) => {
         setImages((currentImages) => {
@@ -93,7 +92,7 @@ const EntryDisplay = (props) => {
         return num;
     };
 
-    const addPhotoHandler = async () => {
+    const addImageHandler = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             // aspect: [4, 3],
@@ -174,7 +173,7 @@ const EntryDisplay = (props) => {
                         ]}
                     >
                         <Button
-                            title='Cancel'
+                            title='Close'
                             onPress={cancelHandler}
                             color='red'
                         />
@@ -199,7 +198,12 @@ const EntryDisplay = (props) => {
                     data={images}
                     renderItem={({ item }) => (
                         <>
-                            <ImageView
+                            <ImageItem
+                                uri={{ uri: item.src }}
+                                deleteEntryHandler={deleteEntryHandler}
+                                id={item.id}
+                            />
+                            {/* <ImageView
                                 images={[{ uri: item.src }]}
                                 imageIndex={0}
                                 visible={imageVisible}
@@ -234,7 +238,7 @@ const EntryDisplay = (props) => {
                                         )}
                                     />
                                 </View>
-                            </Pressable>
+                            </Pressable> */}
                         </>
                     )}
                     keyExtractor={(item) => item.id}
@@ -252,8 +256,8 @@ const EntryDisplay = (props) => {
                     </View>
                     <View style={styles.button}>
                         <Button
-                            title='Add Photo'
-                            onPress={addPhotoHandler}
+                            title='Add Image'
+                            onPress={addImageHandler}
                             color='black'
                         />
                     </View>
@@ -268,7 +272,7 @@ const EntryDisplay = (props) => {
                 <View style={styles.buttonContainer}>
                     <View style={styles.button}>
                         <Button
-                            title='Cancel'
+                            title='Close'
                             onPress={cancelHandler}
                             color='red'
                         />
